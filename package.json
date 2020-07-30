@@ -1,6 +1,6 @@
 {
   "name": "@jitsi/megolm",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Megolm single ratchet implementation in pure JavaScript",
   "repository": {
     "type": "git",
