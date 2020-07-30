@@ -2,6 +2,10 @@
   "name": "@jitsi/megolm",
   "version": "0.1.0",
   "description": "Megolm single ratchet implementation in pure JavaScript",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jitsi/megolm.js"
+  },
   "main": "lib/megolm.js",
   "typings": "lib/index.d.ts",
   "scripts": {
