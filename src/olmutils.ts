@@ -1,4 +1,4 @@
-import base64js from 'base64-js';
+import * as base64js from 'base64-js';
 import varint from 'varint';
 
 const GROUP_MESSAGE_INDEX_TAG = 0x08;

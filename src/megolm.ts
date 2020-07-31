@@ -1,7 +1,7 @@
 /* global window */
 /* eslint-disable no-bitwise */
 
-import base64js from 'base64-js';
+import * as base64js from 'base64-js';
 
 // Megolm constants, must keep them in sync with libolm.
 //

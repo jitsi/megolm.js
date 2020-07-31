@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import base64js from 'base64-js';
+import * as base64js from 'base64-js';
 
 import * as OlmUtils from './olmutils';
 

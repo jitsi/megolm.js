@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-import base64js from 'base64-js';
 import Olm from 'olm';
 
 import { Megolm, OlmUtils } from './megolm';
