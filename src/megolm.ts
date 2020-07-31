@@ -17,6 +17,11 @@ const HASH_KEY_SEEDS = [
     new Uint8Array([ 3 ])
 ];
 
+// Megolm extension constants.
+//
+
+const XMEGOLM_EXPORT_VERSION = 0x01;
+
 
 type RatchetData = Array<Uint8Array>;
 
@@ -66,6 +71,36 @@ export class Megolm {
      * The current ratchet state and counter.
      */
     private _state: RatchetState;
+
+    /**
+     * Imports a Megolm object which has been exported with Megolm.export.
+     */
+    static import(importData: string): Megolm {
+        const adjustedSize = Math.round(importData.length / 4) * 4; // Must be a multiple of 4.
+        const bytes = Uint8Array.from(base64js.toByteArray(importData.padEnd(adjustedSize, '=')));
+        const view = new DataView(bytes.buffer);
+        const v = view.getUint8(0);
+
+        if (v !== XMEGOLM_EXPORT_VERSION) {
+            throw new Error(`Unexpected export version: ${v}`);
+        }
+
+        if (bytes.byteLength !== 133) {
+            throw new Error(`Invalid payload length: ${bytes.byteLength}`);
+        }
+
+        const state = {
+            counter: view.getUint32(1),
+            data: [
+                bytes.subarray(5, 37),
+                bytes.subarray(37, 69),
+                bytes.subarray(69, 101),
+                bytes.subarray(101, 133)
+            ]
+        };
+
+        return new Megolm(state);
+    }
 
     /**
      * Builds a Megolm object from the shared session format used by libolm's
@@ -229,6 +264,31 @@ export class Megolm {
         }
 
         return window.crypto.subtle.verify('HMAC', this._keys!.macKey, signature, data);
+    }
+
+    /**
+     * Exports the current state to a format which Megolm.import can understand.
+     */
+    export(): string {
+        // The format is similar to libolm's session sharing format.
+        // +---+----+--------+--------+--------+--------+
+        // | V | i  | R(i,0) | R(i,1) | R(i,2) | R(i,3) |
+        // +---+----+--------+--------+--------+--------+
+        // 0   1    5        37       69      101      133
+
+        const bytes = new Uint8Array([
+            XMEGOLM_EXPORT_VERSION,
+            0, 0, 0, 0,
+            ...this._state.data[0],
+            ...this._state.data[1],
+            ...this._state.data[2],
+            ...this._state.data[3]
+        ]);
+        const view = new DataView(bytes.buffer);
+
+        view.setUint32(1, this._state.counter);
+
+        return base64js.fromByteArray(bytes);
     }
 
     /**

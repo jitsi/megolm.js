@@ -37,6 +37,10 @@ interface RatchetState {
  */
 export declare class Megolm {
     /**
+     * Imports a Megolm object which has been exported with Megolm.export.
+     */
+    static import(importData: string): Megolm;
+    /**
      * Builds a Megolm object from the shared session format used by libolm's
      * OutgoingSession.session_key() method.
      */
@@ -72,12 +76,21 @@ export declare class Megolm {
      */
     verify(signature: Uint8Array, data: Uint8Array): Promise<boolean>;
     /**
+     * Exports the current state to a format which Megolm.import can understand.
+     */
+    export(): string;
+    /**
      * Returns the current ratchet state. This can be used to serialize and restore
      * it later.
      */
     getState(): RatchetState;
 }
 ```
+
+### Extensions
+
+The `import` and `export` methods are extensions to the original implementation,
+inspired by libolm's session sharing.
 
 ## Acknowledgements
 

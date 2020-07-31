@@ -233,3 +233,22 @@ describe('libolm interoperability:: ', async () => {
         expect(new Uint8Array(result)).toEqual(decoded.ciphertext);
     });
 });
+
+describe('Import / export functionality', async () => {
+    it('should be possible to export and then import a ratchet', async () => {
+        const r1 = new Megolm();
+
+        await r1.advanceTo(123);
+
+        const r1State = r1.getState();
+
+        expect(r1State.counter).toEqual(123);
+
+        const r2 = Megolm.import(r1.export());
+        const r2State = r2.getState();
+
+        expect(r2State.counter).toEqual(123);
+
+        expect(flattenData(r1State.data)).toEqual(flattenData(r2State.data));
+    });
+});
