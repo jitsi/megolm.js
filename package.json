@@ -9,6 +9,7 @@
   "main": "lib/megolm.js",
   "scripts": {
     "build": "tsc",
+    "build-docs": "documentation build src/megolm.ts --shallow -f md -o API.md --markdown-toc false",
     "lint": "eslint --ext .ts,.tsx ./src",
     "prepare": "npm run build",
     "test": "karma start",
@@ -20,6 +21,7 @@
     "@types/jasmine": "3.5.11",
     "@typescript-eslint/eslint-plugin": "3.4.0",
     "@typescript-eslint/parser": "3.4.0",
+    "documentation": "13.0.2",
     "eslint": "7.3.1",
     "eslint-config-jitsi": "github:jitsi/eslint-config-jitsi#1.0.3",
     "eslint-plugin-import": "2.21.2",

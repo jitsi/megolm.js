@@ -22,70 +22,7 @@ in order to make checking its correctness easier.
 
 ## API
 
-```
-declare type RatchetData = Array<Uint8Array>;
-
-interface RatchetState {
-    counter: number;
-    data: RatchetData;
-}
-
-/**
- * Megolm.js is a JavaScript implementation of the Megolm cryptographic ratchet.
- * It is intended to be used standalone, but it's interoperable with libolm's
- * implementation.
- */
-export declare class Megolm {
-    /**
-     * Imports a Megolm object which has been exported with Megolm.export.
-     */
-    static import(importData: string): Megolm;
-    /**
-     * Builds a Megolm object from the shared session format used by libolm's
-     * OutgoingSession.session_key() method.
-     */
-    static fromSharedSession(sessionKey: string): Megolm;
-    /**
-     * Builds a new Megolm instance. The given initial state can be used to restore
-     * a previously saved ratchet state.
-     */
-    constructor(initialState?: RatchetState);
-    /**
-     * Advances the ratched by one step.
-     */
-    advance(): Promise<void>;
-    /**
-     * Advances the ratchet the given number of steps.
-     */
-    advanceTo(idx: number): Promise<void>;
-    /**
-     * Encrypts the given data using the current key.
-     * The encryption performed is AES-CBC, as specified by megolm.
-     */
-    encrypt(data: Uint8Array): Promise<ArrayBuffer>;
-    /**
-     * Decrypts the given data using the current key.
-     */
-    decrypt(data: Uint8Array): Promise<ArrayBuffer>;
-    /**
-     * Computes the signature of the given data using HMAC SHA-256.
-     */
-    sign(data: Uint8Array): Promise<ArrayBuffer>;
-    /**
-     * Verfifies the given signature for the given data.
-     */
-    verify(signature: Uint8Array, data: Uint8Array): Promise<boolean>;
-    /**
-     * Exports the current state to a format which Megolm.import can understand.
-     */
-    export(): string;
-    /**
-     * Returns the current ratchet state. This can be used to serialize and restore
-     * it later.
-     */
-    getState(): RatchetState;
-}
-```
+See [API.md](API.md).
 
 ### Extensions
 
